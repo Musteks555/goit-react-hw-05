@@ -6,14 +6,12 @@ import transformPath from "../../service/createPath";
 import Loader from "../Loader/Loader";
 import MovieCast from "../MovieCast/MovieCast";
 import MovieReviews from "../MovieReviews/MovieReviews";
+import DefaultImg from "../DefaultImg/DefaultImg";
 
 const MovieDetailsItem = ({ poster_path, title, vote_average, overview, genres }) => {
-    const defaultImg =
-        "<https://dl-media.viber.com/10/share/2/long/vibes/icon/image/0x0/95e0/5688fdffb84ff8bed4240bcf3ec5ac81ce591d9fa9558a3a968c630eaba195e0.jpg>";
-
     return (
         <div>
-            <img src={poster_path ? transformPath(poster_path) : defaultImg} alt="poster" />
+            {poster_path ? <img src={transformPath(poster_path)} alt="poster" width={150} /> : <DefaultImg />}
 
             <h2>{title}</h2>
 

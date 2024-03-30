@@ -21,7 +21,7 @@ const HomePage = () => {
                 toast.error("Unfortunately, no results were found.");
                 console.log(err);
             })
-            .finally(setLoading(false));
+            .finally(() => setLoading(false));
     }, []);
 
     return (
