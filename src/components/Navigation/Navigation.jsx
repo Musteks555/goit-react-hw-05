@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-const Layout = ({ children }) => {
+const Navigation = ({ children }) => {
     return (
         <>
             <header>
@@ -14,4 +14,4 @@ const Layout = ({ children }) => {
     );
 };
 
-export default Layout;
+export default Navigation;

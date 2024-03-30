@@ -1,4 +1,4 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Outlet, Route, Routes } from "react-router-dom";
 import { Suspense } from "react";
 
 import transformPath from "../../service/createPath";
@@ -48,6 +48,8 @@ const MovieDetailsItem = ({ poster_path, title, vote_average, overview, genres }
                     </Link>
                 </li>
             </ul>
+
+            <Outlet />
 
             <Suspense fallback={<Loader />}>
                 <Routes>

@@ -5,6 +5,7 @@ import { getMovieActors } from "../../service/api";
 import transformPath from "../../service/createPath";
 
 import Loader from "../Loader/Loader";
+import toast, { Toaster } from "react-hot-toast";
 
 const MovieCast = () => {
     const { movieId } = useParams();
@@ -19,9 +20,16 @@ const MovieCast = () => {
 
         getMovieActors(movieId)
             .then((data) => {
-                setMovieData(data);
+                if (data.cast.length) {
+                    setMovieData(data.cast);
+                } else {
+                    throw new Error("Unfortunately, no results were found");
+                }
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                toast.error("Unfortunately, no results were found.");
+                console.log(err);
+            })
             .finally(() => setLoading(false));
     }, [movieId]);
 
@@ -29,7 +37,7 @@ const MovieCast = () => {
         <div>
             <ul>
                 {movieData &&
-                    movieData.cast.map(({ id, profile_path, name }) => {
+                    movieData.map(({ id, profile_path, name }) => {
                         return (
                             <li key={id}>
                                 <img src={profile_path ? transformPath(profile_path) : defaultImg} alt="profile" width={150} />
@@ -41,6 +49,7 @@ const MovieCast = () => {
             </ul>
 
             {loading && <Loader />}
+            <Toaster position="top-right" reverseOrder={false} />
         </div>
     );
 };

@@ -4,6 +4,7 @@ import SearchForm from "../components/SearchForm/SearchForm";
 import Loader from "../components/Loader/Loader";
 import { getMovieByName } from "../service/api";
 import MovieList from "../components/MovieList/MovieList";
+import toast, { Toaster } from "react-hot-toast";
 
 const MoviesPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -23,7 +24,10 @@ const MoviesPage = () => {
 
         getMovieByName(movieName)
             .then((movie) => setMovies(movie.results))
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                toast.error("Unfortunately, no results were found.");
+                console.log(err);
+            })
             .finally(() => setLoading(false));
     }, [searchParams]);
 
@@ -32,6 +36,8 @@ const MoviesPage = () => {
             <SearchForm onSubmit={onSubmit} />
             <MovieList movies={movies} />
             {loading && <Loader />}
+
+            <Toaster position="top-right" reverseOrder={false} />
         </div>
     );
 };

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { getMovieReviews } from "../../service/api";
 
 import Loader from "../Loader/Loader";
+import toast, { Toaster } from "react-hot-toast";
 
 const MovieReviews = () => {
     const { movieId } = useParams();
@@ -15,10 +16,16 @@ const MovieReviews = () => {
 
         getMovieReviews(movieId)
             .then((data) => {
-                console.log(data);
-                setMovieData(data);
+                if (data.results.length) {
+                    setMovieData(data.results);
+                } else {
+                    throw new Error("Unfortunately, no results were found");
+                }
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                toast.error("Unfortunately, no results were found.");
+                console.log(err);
+            })
             .finally(() => setLoading(false));
     }, [movieId]);
 
@@ -26,7 +33,7 @@ const MovieReviews = () => {
         <div>
             <ul>
                 {movieData &&
-                    movieData.results.map(({ id, author, content }) => {
+                    movieData.map(({ id, author, content }) => {
                         return (
                             <li key={id}>
                                 <p>Author: {author}</p>
@@ -37,6 +44,8 @@ const MovieReviews = () => {
                     })}
             </ul>
             {loading && <Loader />}
+
+            <Toaster position="top-right" reverseOrder={false} />
         </div>
     );
 };

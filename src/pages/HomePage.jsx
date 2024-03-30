@@ -4,6 +4,7 @@ import { getMovies } from "../service/api";
 
 import Loader from "../components/Loader/Loader";
 import MovieList from "../components/MovieList/MovieList";
+import toast, { Toaster } from "react-hot-toast";
 
 const HomePage = () => {
     const [movies, setMovies] = useState([]);
@@ -16,7 +17,10 @@ const HomePage = () => {
             .then((movie) => {
                 setMovies(movie.results);
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                toast.error("Unfortunately, no results were found.");
+                console.log(err);
+            })
             .finally(setLoading(false));
     }, []);
 
@@ -27,6 +31,8 @@ const HomePage = () => {
             <MovieList movies={movies} />
 
             {loading && <Loader />}
+
+            <Toaster position="top-right" reverseOrder={false} />
         </div>
     );
 };
